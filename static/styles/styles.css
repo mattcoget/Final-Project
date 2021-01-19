@@ -1,0 +1,55 @@
+body {
+    font-family: 'Arial';font-size: 14px;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: hotpink
+}
+
+.header{
+	margin:5px 5px 30px 5px;
+}
+
+.app-container {
+	margin:25px 40px 50px 40px;
+}
+
+.app-header {
+    height: 60px;
+    line-height: 60px;
+    border-bottom: thin lightgrey solid;
+}
+
+.app-header .app-header--title {
+    font-size: 22px;
+    padding-left: 5px;
+}
+
+.form-control {
+	width:100px;
+	height:35px;
+}
+
+.col-xs-3 {
+	width:100px;
+	display: inline-block;
+}
+.pull-right{
+	float:right;
+}
+
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #3e8e41;
+}

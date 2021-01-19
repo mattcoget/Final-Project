@@ -2,21 +2,35 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Euroconsult</title>
+    <title>Euroconsult Dashboard</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 
 </head>
 <body>
-<div class="container">
+<div class="container app-container">
+	<div class="header">
+	  <img src="static/img/title.png" alt="logo" width="180" height="40"/>
+	</div>
     <div class="row">
 		<div class="row">
-			<div class="col-xs-3">
-				<label> Choose the dataset....</label>
-				<select class="form-control" id ='first_data'>
-					<option value="Budget">Budget</option>
-					<option value="Satellite">Satellite</option>
-				</select>
+			<div class="row">
+				<div class="col-xs-3">
+					<select class="form-control" id ='first-data'>
+						<option value="Budget">Budget</option>
+						<option value="Satellite">Satellite</option>
+					</select>
+				</div>
+
+				{{download_csv | safe}}
+				<a href="{{url_for('download', type='csv')}}" role="button" class="download" name="csv-file" style="font-size:20px"><i class="fas fa-file-csv"></i></a>
+				{{download_excel | safe}}
+				<a href="{{url_for('download', type='excel')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
+
 			</div>
 			<div class="col-lg-12">
 				<div id="tableau">
@@ -29,13 +43,6 @@
 		</div>
     </div>
 	<div class="row">
-        <div class="col-xs-3">
-            <label> Choose the plot type....</label>
-            <select class="form-control" id ='first_cat'>
-                <option value="Bar">Bar</option>
-                <option value="Scatter">Scatter</option>
-            </select>
-        </div>
         <div class="col-md-6">
             <div class="chart" id="bargraph">
                 <script>
@@ -49,14 +56,14 @@
 <script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
 <!--<script src="{{ url_for('static', filename='js/plots.js') }}"></script>-->
 <script>
-	$('#first_data').on('change',function(){
+	$('#first-data').on('change',function(){
 
 		$.ajax({
 			url: "/plot",
 			type: "GET",
 			contentType: 'application/json;charset=UTF-8',
 			data: {
-				'selected': document.getElementById('first_data').value
+				'selected': document.getElementById('first-data').value
 
 			},
 			dataType:"json",
@@ -66,22 +73,9 @@
 		});
 
 	})
-	$('#first_cat').on('change',function(){
-
-		$.ajax({
-			url: "/plot",
-			type: "GET",
-			contentType: 'application/json;charset=UTF-8',
-			data: {
-				'selected': document.getElementById('first_cat').value
-
-			},
-			dataType:"json",
-			success: function (data) {
-				Plotly.newPlot('bargraph', data );
-			}
-		});
-	})
+	
+	
 </script>
+
 </body>
 </html>
