@@ -13,14 +13,22 @@
 </head>
 <body>
 <div class="container app-container">
-	<div class="header">
+	<!--<div class="app-header">
+	  <h1>Euroconsult Dashboard</h1>
 	  <img src="static/img/title.png" alt="logo" width="180" height="40"/>
+	</div>-->
+	<div class="header">
+	  <a href="#default" class="logo">Euroconsult Dashboard</a>
+	  <div class="header-right">
+		<a class="active" href="#Page1">Page1</a>
+		<a href="#Page2">Page2</a>
+		<a href="#Page3">Page3</a>
+	  </div>
 	</div>
-    <div class="row">
-		<div class="row">
-			<div class="row">
+    <div class="row" style=" border-bottom: thin lightgrey solid;">
+			<div class="row" style="margin:5px 40px 0px 40px;">
 				<div class="col-xs-3">
-					<select class="form-control" id ='first-data'>
+					<select class="form-control indicator" id ='first-data'>
 						<option value="Budget">Budget</option>
 						<option value="Satellite">Satellite</option>
 					</select>
@@ -30,8 +38,18 @@
 				<a href="{{url_for('download', type='csv')}}" role="button" class="download" name="csv-file" style="font-size:20px"><i class="fas fa-file-csv"></i></a>
 				{{download_excel | safe}}
 				<a href="{{url_for('download', type='excel')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
-
+				
+				<div style="width:300px;" class="pull-right col-xs-3">
+					<form action="/update_selector" ALIGN="CENTRE" method="POST">
+					<div id="list1" class="dropdown-check-list indicator" tabindex="100">
+					  <span class="anchor">Attributes</span>
+					  <ul class="items" id="df-columns">{{selector | safe}}</ul>
+					</div>
+					</form>
+				</div>
+				<!--<a href="{{url_for('download', type='csv')}}" role="button" style="padding-top:10px; font-size:16px; float:right;"><i class="fa fa-refresh" style="font-size:16px;"></i></a>-->
 			</div>
+			
 			<div class="col-lg-12">
 				<div id="tableau">
 					<script>
@@ -41,7 +59,7 @@
 				</div>
 			</div>
 		</div>
-    </div>
+
 	<div class="row">
         <div class="col-md-6">
             <div class="chart" id="bargraph">
@@ -63,14 +81,52 @@
 			type: "GET",
 			contentType: 'application/json;charset=UTF-8',
 			data: {
+				'type':'indicators',
 				'selected': document.getElementById('first-data').value
 
+			},
+			dataType:"json",
+			success: function (data) {
+				var tableau	 = JSON.parse(data['table']);
+				Plotly.newPlot('tableau', tableau);
+				$("#df-columns").html(data['selector']);
+			}
+		})
+
+	});
+	/*columnSelector*/
+	$('#list1').on('click',function(evt){
+		var checkList = document.getElementById('list1');
+
+		 if (checkList.classList.contains('visible'))
+			checkList.classList.remove('visible');
+		 else
+			checkList.classList.add('visible');
+	})
+	
+
+	$('#df-columns li > input').click(function (event) {
+		var checkboxes = document.getElementsByClassName('columnSelector');
+		var selected = "";
+		for (var checkbox of checkboxes) {
+			if (checkbox.checked)
+			  selected = selected.concat(',', checkbox.value);
+		  }
+		console.log(selected)
+		$.ajax({
+			url: "/plot",
+			type: "GET",
+			contentType: 'application/json;charset=UTF-8',
+			data: {
+				'type':'attributes',
+				'selected': selected
 			},
 			dataType:"json",
 			success: function (data) {
 				Plotly.newPlot('tableau', data);
 			}
 		});
+				
 
 	})
 	
