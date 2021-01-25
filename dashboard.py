@@ -8,95 +8,181 @@ import webbrowser
 from threading import Timer
 import logging
 from dashboard_plots import *
+from dashboardDB import *
 
-
-class DashboardDB:
- 
-    def __init__(self):
-        self.indicator = 'Budget'
-        self.df=None
-
-    def setDataFrame(self, df1, df2):
-        self.budget = df1
-        self.df =  df1
-        self.satellite = df2
-        
-    def changeIndicator(self, indicator):
-        self.indicator = indicator
-        self.df = self.budget if indicator == 'Budget' else self.satellite
-        
-    def filterDataFrame(self,cols):
-        self.df = self.budget[cols] if self.indicator == 'Budget' else self.satellite[cols]
-        
-    def getIndicator(self):
-        return self.indicator
-    
-    def getDataFrame(self):
-        return self.df
-
-    
-budget = pd.read_csv('data/clean_budget.csv')
-satellite = pd.read_csv('data/clean_satellite.csv')
 
 db = DashboardDB()
-db.setDataFrame(budget, satellite)
 
 app = Flask(__name__)
 
 def create_selector(columns):
-    indicator = db.getIndicator()
-    origin_columns = db.budget.columns if indicator == 'Budget' else db.satellite.columns
+    """
+    Return selector(list of features) in html format for selected indicator
+    Input features name = columns
+    """
+    origin_columns = db.budget.columns if db.getIndicator() == 'Budget' else db.satellite.columns
     
     selector = ""
     for name in origin_columns:
         checked = 'checked' if name in columns else 'unchecked'
-        selector += f'<li><input value="{name}" type="checkbox" class="columnSelector" {checked}/>{name} </li>'
+        active = 'active' if name in columns else ''
+        selector += f'<label class="selector-btn btn btn-light {active}"><input value="{name}"  type="checkbox" class="form-check list-group-item columnSelector" {checked}/>{name}</label>'
     return selector
+
+def create_filters(filter_type, lst):
+    """
+    Return selectors for country and program type in html format
+    Input features type = filter_type, selected filters = lst
+    """
+    all_filter = db.getCountries() if filter_type == "country" else db.getPrograms()
+    filters = ""
+    for name in all_filter:
+        checked = 'checked' if name in lst else 'unchecked'
+        filters += f'<li><input value="{name}" type="checkbox" class="{filter_type}" {checked}/>{name} </li>'
+    return filters
+
+def create_sat_filters(): 
+    """
+    Return satellite selectors for country and application in html format
+    """
+    countries=""
+    applications = f'<option value="all">all</option>'
+
+    for name in list(db.satellite.country.unique()):
+        countries += f'<option value="{name}">{name}</option>'
+    for app_name in list(db.satellite.Application.unique()):
+        applications += f'<option value="{app_name}">{app_name}</option>'
+    return countries, applications 
+
+def create_bubble_filters(): 
+    """
+    Return selectors for programs and application in html format
+    """
+    programs=""
+    applications=""
+
+    for name in list(db.budget_coordinates.program_type.unique()):
+        programs += f'<option value="{name}">{name}</option>'
+    for app_name in list(db.budget_coordinates.application.unique()):
+        applications += f'<option value="{app_name}">{app_name}</option>'
+    return programs, applications 
 
 @app.route('/')
 def index():
-    df = db.getDataFrame()
-    bar = create_plot(db.budget)
-    table = create_table(df)
-    selector = create_selector(df.columns)
-    return render_template('index.html', table=table, plot=bar, selector=selector)
-
-@app.route('/plot', methods=['GET', 'POST'])
-def change_features():
-    feature = request.args['selected']
-    feature_type = request.args['type']
-    print(feature_type)
-    print(feature)
-    if feature_type == "indicators":
-
-        if feature == 'Satellite' or feature == 'Budget':
-            indicator=feature
-            db.changeIndicator(indicator)
-        df = db.getDataFrame()
-        selector = create_selector(df.columns)
-
-        tableJSON = create_table(df)       
-        return jsonify(table=tableJSON,selector=selector)
+    """
+    Create html template(index.html + jsons)
+    """
+    selector = create_selector(db.get_features())
     
-    elif feature_type == "attributes":
-        columns = request.args['selected'].strip(',').split(",")
-        print(columns)
-        db.filterDataFrame(columns)     
-        df = db.getDataFrame()
-        tableJSON = create_table(df)
-        
-        return tableJSON
+    df = db.budget
+    #table = create_table(df)
+    lineChart = create_lineChart(df)
+    
+    program_bb, apps_bb = create_bubble_filters()
+    bubbleChart = create_bubbleChart(db.getFilteredBudgetCoor('Civil','Earth Observation',2019))
+    
+    countries = create_filters("country",db.getCountries())
+    programs = create_filters("program",db.getPrograms())
+    
+    satellites = create_satellite_table(db.getFilteredSatellites('China','all'))
+    country_sats, apps = create_sat_filters()
+
+    
+    return render_template('index.html', selector=selector, 
+                           plot=lineChart,  bubbleplot=bubbleChart,     
+                           countries=countries, programs=programs, satellites=satellites,
+                           countries_sat=country_sats, applications=apps,
+                          program_type=program_bb, application_type=apps_bb)
+
+@app.route('/indicator', methods=['GET', 'POST'])
+def change_indicator():
+    """
+    Return list of selected columns(html list) in json format
+    Call back from indicator selector(html)
+    """
+    feature = request.args['selected']
+    if feature == 'Satellite' or feature == 'Budget':
+        indicator=feature
+        db.setIndicator(indicator)
+    selector = create_selector(db.get_features())
+
+    return jsonify(selector=selector)
+
+@app.route('/features', methods=['GET', 'POST'])
+def change_features():
+    """
+    Update list of selected columns(html list) in json format
+    Call back from features selector(html)
+    """
+    features = request.args['selected']
+    db.setFeatures(features)  
+    
+    return 'OK'
+
+@app.route('/bubblePlot_filter', methods=['GET', 'POST'])
+def change_bubble_filter():
+    """
+    Return bubbleChart in json format
+    Call back from filters(year range, program and application selectors)
+    """
+    filter_type = request.args['type']
+    programs = request.args['program']
+    apps = request.args['app']
+    year = request.args['year']
+    
+    df = db.getFilteredBudgetCoor(programs,apps,year)
+
+    bubbles = create_bubbleChart(df)
+
+    return bubbles
+
+
+@app.route('/linePlot_filter', methods=['GET', 'POST'])
+def change_filter():
+    """
+    Return lineChart and data table in json format
+    Call back from filters(country, programs selectors)
+    """
+    countries = request.args['countries']
+    programs = request.args['programs']
+    df = db.getFilteredBudget(countries.strip(',').split(','),programs.strip(',').split(','))
+
+    #tableJSON = create_table(df) 
+    lineChart = create_lineChart(df)
+
+    return jsonify(plot=lineChart)
+    
+
+@app.route('/satellite_filter', methods=['GET', 'POST'])
+def change_satellite_filter():
+    """
+    Return data table in json format
+    Call back from filters(country, applications)
+    """
+    filter_country = request.args['country']
+    filter_apps = request.args['app']
+    df = db.getFilteredSatellites(filter_country,filter_apps)
+    satellites = create_satellite_table(df)
+
+    return jsonify(satellites=satellites)
 
 
 @app.route('/download', methods=['GET', 'POST'])
 def download():
-    # stream the response as the data is generated
-    indicator = db.getIndicator()
-    df = db.getDataFrame()
-    print("download file ...",indicator)
+    """
+    Return flask make_response (download file)
+    Call back from download button in html
+    """
     file_type = request.args.get('type')
+    filter_type = request.args.get('filter')
     
+    indicator = db.getIndicator()
+    df = db.getDataFrame() if filter_type == "feature" else db.filteredBudgetCoor if filter_type == 'coor_budget' else db.getSatelliteDF() if filter_type== "satellites" else db.getFilteredData()
+    if filter_type== "satellites":
+        indicator = "satellites"
+
     try:
+        
         if file_type == 'csv':
             response = make_response(df.to_csv())
             response.headers["Content-Disposition"] = f"attachment; filename={indicator}.csv"
