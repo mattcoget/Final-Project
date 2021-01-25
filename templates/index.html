@@ -3,6 +3,12 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Euroconsult Dashboard</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<!-- include the JavaScript files -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -12,124 +18,295 @@
 
 </head>
 <body>
-<div class="container app-container">
-	<!--<div class="app-header">
-	  <h1>Euroconsult Dashboard</h1>
-	  <img src="static/img/title.png" alt="logo" width="180" height="40"/>
-	</div>-->
-	<div class="header">
-	  <a href="#default" class="logo">Euroconsult Dashboard</a>
-	  <div class="header-right">
-		<a class="active" href="#Page1">Page1</a>
-		<a href="#Page2">Page2</a>
-		<a href="#Page3">Page3</a>
-	  </div>
-	</div>
-    <div class="row" style=" border-bottom: thin lightgrey solid;">
-			<div class="row" style="margin:5px 40px 0px 40px;">
-				<div class="col-xs-3">
-					<select class="form-control indicator" id ='first-data'>
-						<option value="Budget">Budget</option>
-						<option value="Satellite">Satellite</option>
-					</select>
-				</div>
+<div class="header">
+  <a href="#default" class="logo">Euroconsult Dashboard</a>
+</div>
+<div class="main container">
+    <div class="row indicator-row">
+	   <!--<label class="indicator-label">Indicator</label>-->
+		  <select style="margin-top: 10px;" class="form-control indicator" id ='data-indicator'>
+			<option value="Budget">Budget</option>
+			<option value="Satellite">Satellite</option>
+		  </select>
+		  <div style="margin-top:5px;" class="col-xs-3">
+			{{download_csv | safe}}
+			<a href="{{url_for('download', type='csv', filter='feature')}}" role="button" class="download" name="csv-file" style="font-size:20px"><i class="fas fa-file-csv"></i></a>
+			{{download_excel | safe}}
+			<a href="{{url_for('download', type='excel', filter='feature')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
+		  </div>
+		<div class="form-check list-inline list-group-horizontal btn-group demo-2" role="group" data-toggle="buttons"> 
+		  
+		  <div id="df-columns">
+			{{selector | safe}}
+		  </div>
+		</div>
+		
+		</div>
 
-				{{download_csv | safe}}
-				<a href="{{url_for('download', type='csv')}}" role="button" class="download" name="csv-file" style="font-size:20px"><i class="fas fa-file-csv"></i></a>
-				{{download_excel | safe}}
-				<a href="{{url_for('download', type='excel')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
-				
-				<div style="width:300px;" class="pull-right col-xs-3">
-					<form action="/update_selector" ALIGN="CENTRE" method="POST">
-					<div id="list1" class="dropdown-check-list indicator" tabindex="100">
-					  <span class="anchor">Attributes</span>
-					  <ul class="items" id="df-columns">{{selector | safe}}</ul>
-					</div>
-					</form>
+		<div class="row bubbleplot-row" style=" border-bottom: thin lightgrey solid;">
+			<div class="col-lg-2 col-bubble">
+				<div class="row" style="height: 50px;">
+					{{download_csv | safe}}
+					<a href="{{url_for('download', type='csv', filter='coor_budget')}}" role="button" class="download" name="csv-file" style="padding-right: 5px;font-size:20px"><i class="fas fa-file-csv"></i></a>
+					{{download_excel | safe}}
+					<a href="{{url_for('download', type='excel', filter='coor_budget')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
 				</div>
-				<!--<a href="{{url_for('download', type='csv')}}" role="button" style="padding-top:10px; font-size:16px; float:right;"><i class="fa fa-refresh" style="font-size:16px;"></i></a>-->
+				<div class="row bubbleplot-row">
+					<div class="slidecontainer">
+					  <input type="range" min="1999" max="2020" value="2019" id="yearRange">
+					  <output id="slider-val">2019</output>
+					</div>
+				</div>
+				<div class="row  bubble-label">
+					<label class="bubbleplot-row">Program type</label>
+				</div>
+				<div class="row bubble_row">
+					<select class="form-control bubbleplot-row" id ='bubble-program-type'>
+						{{program_type | safe}}
+					 </select>
+				</div>
+				<div class="row bubble-label">
+					<label class="bubbleplot-row">Application</label>
+				</div>
+				<div class="row bubble_row">
+					<select class="form-control bubbleplot-row" id ='application-type'>
+						{{application_type | safe}}
+					 </select>
+				</div>
 			</div>
-			
-			<div class="col-lg-12">
-				<div id="tableau">
+			<div class="col-md-8">
+				<div class="chart" id="bubblegraph">
 					<script>
-						var tables = {{table | safe}};
-						Plotly.plot('tableau',tables,{});
+						var bubblegraphs = {{bubbleplot | safe}};
+						Plotly.plot('bubblegraph',bubblegraphs,{});
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row lineplot-row" style=" border-bottom: thin lightgrey solid;">	
+			<div class="col-lg-2 col-filter">
+				<div class="row" style="height: 50px;">
+					{{download_csv | safe}}
+					<a href="{{url_for('download', type='csv', filter='country_program')}}" role="button" class="download" name="csv-file" style="padding-right: 5px;font-size:20px"><i class="fas fa-file-csv"></i></a>
+					{{download_excel | safe}}
+					<a href="{{url_for('download', type='excel', filter='country_program')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
+				</div>
+				<div class="row filter-row" style="height: 90px;">
+					<div id="country-list" class="dropdown-check-list indicator" tabindex="100">
+					   <span class="anchor">Country</span>
+					   <ul class="items country-programs" id="df-country">
+						 {{countries | safe}}
+					   </ul>
+					</div>
+				</div>
+				<div class="row filter-row">
+					<div id="program-type" class="dropdown-check-list indicator" tabindex="100">
+					   <span class="anchor">Programs</span>
+					   <ul class="items country-programs" id="df-program">
+						 {{programs | safe}}
+					   </ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-10">
+				<div class="chart" id="bargraph">
+					<script>
+						var graphs = {{plot | safe}};
+						Plotly.plot('bargraph',graphs,{});
 					</script>
 				</div>
 			</div>
 		</div>
 
-	<div class="row">
-        <div class="col-md-6">
-            <div class="chart" id="bargraph">
-                <script>
-                    var graphs = {{plot | safe}};
-                    Plotly.plot('bargraph',graphs,{});
-                </script>
-            </div>
-        </div>
+	<div class="row satellite-row">
+		<div class="col-lg-2 col-sat">
+			<div class="row" style="height: 50px;">
+				{{download_csv | safe}}
+				<a href="{{url_for('download', type='csv', filter='satellites')}}" role="button" class="download" name="csv-file" style="padding-right: 5px;font-size:20px"><i class="fas fa-file-csv"></i></a>
+				{{download_excel | safe}}
+				<a href="{{url_for('download', type='excel', filter='satellites')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
+			</div>
+			<div class="row">
+				<select class="form-control sat-row" id ='country-list-sat'>
+					{{countries_sat | safe}}
+				 </select>
+			</div>
+			<div class="row">
+				<select class="form-control sat-row" id ='application-list'>
+					{{applications | safe}}
+				 </select>
+			</div>
+		</div>
+		<div class="col-lg-10 col-sat-table">
+			<div id="satellites">
+				<script>
+					var satellite_table = {{satellites | safe}};
+					Plotly.plot('satellites',satellite_table,{});
+				</script>
+			</div>
+		</div>
     </div>
 </div>
 <script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
 <!--<script src="{{ url_for('static', filename='js/plots.js') }}"></script>-->
 <script>
-	$('#first-data').on('change',function(){
+	$('#data-indicator').on('change',function(){
 
 		$.ajax({
-			url: "/plot",
+			url: "/indicator",
 			type: "GET",
 			contentType: 'application/json;charset=UTF-8',
 			data: {
-				'type':'indicators',
-				'selected': document.getElementById('first-data').value
+				'selected': document.getElementById('data-indicator').value
 
 			},
 			dataType:"json",
 			success: function (data) {
-				var tableau	 = JSON.parse(data['table']);
-				Plotly.newPlot('tableau', tableau);
 				$("#df-columns").html(data['selector']);
 			}
 		})
 
 	});
-	/*columnSelector*/
-	$('#list1').on('click',function(evt){
-		var checkList = document.getElementById('list1');
+	$('#df-columns').on('click', 'label', function(ev){
 
-		 if (checkList.classList.contains('visible'))
-			checkList.classList.remove('visible');
-		 else
-			checkList.classList.add('visible');
-	})
-	
-
-	$('#df-columns li > input').click(function (event) {
-		var checkboxes = document.getElementsByClassName('columnSelector');
+		clicked = $(this).children(":first");
+		
+		if (clicked.attr('checked'))
+			clicked.attr('checked', false);
+		else
+			clicked.attr('checked', true);
+			
 		var selected = "";
-		for (var checkbox of checkboxes) {
-			if (checkbox.checked)
-			  selected = selected.concat(',', checkbox.value);
-		  }
-		console.log(selected)
+		$(".columnSelector").each(function() {
+			if ($(this).attr('checked'))
+				selected = selected.concat(',', $(this).attr('value'));
+		});
 		$.ajax({
-			url: "/plot",
+			url: "/features",
 			type: "GET",
 			contentType: 'application/json;charset=UTF-8',
 			data: {
-				'type':'attributes',
 				'selected': selected
+			},
+			dataType:"json"
+		});
+	});
+
+	$('.bubble_row').on('change',function(){
+		$.ajax({
+			url: "/bubblePlot_filter",
+			type: "GET",
+			contentType: 'application/json;charset=UTF-8',
+
+			data: {
+				'type':'program',
+				'program': $('#bubble-program-type').val(),
+				'app': $('#application-type').val(),
+				'year': $('#yearRange').val()
+
+			},
+			
+			dataType:"json",
+			success: function (plot) {
+				Plotly.newPlot('bubblegraph',plot,{});
+			}
+		})
+
+	});
+	
+	$("#yearRange").on("input change", function() {
+		var slider = document.getElementById("yearRange");
+
+		$("#slider-val").val(slider.value)
+		
+		$.ajax({
+			url: "/bubblePlot_filter",
+			type: "GET",
+			contentType: 'application/json;charset=UTF-8',
+			data: {
+				'type':'program',
+				'program': $('#bubble-program-type').val(),
+				'app': $('#application-type').val(),
+				'year': $('#yearRange').val()
+
+			},
+			dataType:"json",
+			success: function (plot) {
+				Plotly.newPlot('bubblegraph',plot,{});
+			}
+		})
+	});
+
+	$('#country-list').on('click',function(evt){
+		$( this ).toggleClass( "visible" );
+	});
+	
+	$('#program-type').on('click',function(evt){
+		$( this ).toggleClass( "visible" );
+	});
+	
+
+	$('.country-programs').on('click', 'li',function (event) {
+	
+		clicked = $(this).children(":first");
+		
+		if (clicked.attr('checked'))
+			clicked.attr('checked', false);
+		else
+			clicked.attr('checked', true);
+			
+
+		var countries = "";
+		$(".country").each(function() {
+			if ($(this).attr('checked'))
+				countries = countries.concat(',', $(this).val());
+		});
+		
+		var programs = "";
+		$(".program").each(function() {
+			if ($(this).attr('checked'))
+				programs = programs.concat(',', $(this).val());
+		});
+
+		$.ajax({
+			url: "/linePlot_filter",
+			type: "GET",
+			contentType: 'application/json;charset=UTF-8',
+			data: {
+				'countries': countries,
+				'programs':programs
 			},
 			dataType:"json",
 			success: function (data) {
-				Plotly.newPlot('tableau', data);
+				/**/
+				/*var tableau	 = JSON.parse(data['table'])
+				Plotly.newPlot('tableau', tableau)*/
+				var plot = JSON.parse(data['plot'])
+				Plotly.newPlot('bargraph',plot,{});
 			}
 		});
-				
-
 	})
 	
+	
+	$('.sat-row').on('change',function(){
+		$.ajax({
+			url: "/satellite_filter",
+			type: "GET",
+			contentType: 'application/json;charset=UTF-8',
+			data: {
+				'country': $('#country-list-sat').val(),
+				'app': $('#application-list').val()
+
+			},
+			dataType:"json",
+			success: function (data) {
+				var tableau	 = JSON.parse(data['satellites'])
+				Plotly.newPlot('satellites', tableau);
+			}
+		})
+
+	});
 	
 </script>
 
