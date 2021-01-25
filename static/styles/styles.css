@@ -1,32 +1,42 @@
 body {
     font-family: 'Arial';font-size: 14px;
 }
-* {box-sizing: border-box;}
+
 
 body { 
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+.main {
+  padding: 16px;
+  margin-top: 100px;
+  height: auto;
+  overflow: auto;/* Used in this example to enable scrolling */
+max-width:initial;
+}
 .header {
   overflow: hidden;
-  background-color: #f1f1f1;
-  padding: 20px 10px;
+  /*background-color: #6c757d;*/
+  padding: 15px 15px;
+  overflow: hidden;
+  background-color: #333;
+  position: absolute; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 
 .header a {
-  float: left;
-  color: black;
+  /*float: left;*/
+  color: #e9ecef;
   text-align: center;
   padding: 12px;
   text-decoration: none;
-  font-size: 14px; 
   line-height: 25px;
   border-radius: 4px;
 }
 
 .header a.logo {
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
 }
 
@@ -79,17 +89,21 @@ body {
 }
 
 .form-control {
-	width:100px;
+	width:150px;
 	height:35px;
 	
 }
 
 .col-xs-3 {
 	display: inline-block;
+	padding-right:10px;
+	padding-left:10px;
+	padding-top:10px;
 }
 
-.tableau{
+.col-lg-6{
 	display: inline-block;
+	width:800px;
 }
 
 .pull-right{
@@ -97,15 +111,69 @@ body {
 	width:145px;
 }
 
+.filter-select{
+	width: 150px;
+}
+
 .indicator{
-	width:120px;
-	border-color: rgb(190, 200, 217);
+	width: 140px;
+    height: 35px !important;
+    border-color: rgb(190, 200, 217);
     fill: rgb(255, 255, 255);
     fill-opacity: 1;
-    border-radius:2px;
-	font-family: "Open Sans", verdana, arial, sans-serif;
-    font-size: 12px;
-	color:rgb(42, 63, 95);
+    border-radius: 4px;
+    font-family: "Open Sans", verdana, arial, sans-serif;
+    font-size: 14px;
+    color: rgb(42, 63, 95);
+	display: inline-block;
+	font-weight: 500;
+}
+.indicator-label{
+	display: inline-block;
+	font-size:16px;
+	font-weight:bold;
+	padding-top:20px;
+}
+
+.indicator-row {
+	padding-bottom:15px;
+	padding-left:20px; 
+	border-bottom: thin lightgrey solid;
+	
+}
+/*.filter-row{
+	padding-bottom:0px;
+	padding-left:80px; 
+	padding-right:20px; 
+	padding-top:20px; 
+	flex-wrap:nowrap;
+	display: flex;
+    flex-direction: row;
+    width: 500px;
+}*/
+.lineplot-row{
+	flex-wrap:nowrap;
+	position:static !important;
+	/*margin-bottom:30px;*/
+}
+.col-filter{
+    
+    float: none;
+    /* display: flex; */
+    padding: 20px;
+    width: 200px;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 30px;
+	
+}
+.filter-row{
+	position:static !important;
+	margin-bottom:30px;
+}
+.plot-filter{
+	width: 150px;
 }
 
 .dropdown-check-list {
@@ -119,8 +187,10 @@ body {
   cursor: pointer;
   display: inline-block;
   padding: 10px 50px 10px 10px;
-  border: 1px solid #ccc;
-  width:220px;
+  border: 1px solid rgb(190, 200, 217);
+  width:140px;
+  height: 40px ;
+  border-radius:4px;
 }
 
 .dropdown-check-list .anchor:after {
@@ -160,13 +230,155 @@ body {
 
 .dropdown-check-list.visible .items {
   display: block;
-  height: 8em;
+  height: 6em;
   overflow: scroll;
   overflow-x: hidden;
-  background-color:rgba(255, 255, 255, 0.5);
-  width:220px;
+  background-color:white;
+  width:140px;
 }
 
 .indicators{
 	height:100px;
+}
+
+.list-group-horizontal .list-group-item {
+  display: inline-block; 
+}
+.list-group-horizontal .list-group-item:focus {
+  background-color: #41AADA !important; 
+  color:#fff;
+  display: inline-block;
+}
+.list-group-horizontal .list-group-item {
+  margin-bottom: 0;
+  margin-left:-4px;
+  margin-right: 0;
+}
+.list-group-horizontal .list-group-item:first-child {
+  border-top-right-radius:0;
+  border-bottom-left-radius:4px;  
+}
+.list-group-horizontal .list-group-item:last-child {
+  border-top-right-radius:4px;
+  border-bottom-left-radius:0;   
+}
+.form-check label {
+  padding:.75rem 1.25rem;
+  margin-bottom:0;
+}
+.form-check label input[type="checkbox"] {
+  opacity:0;
+}
+.demo-2 {
+  /*display: inline-block !important;*/
+  float: left !important;
+  width:auto;
+  /*width: 90% !important;*/
+  padding-top: 5px;
+}
+.selector-btn.active{
+	color: #e9ecef !important;
+    background-color: #305072 !important;
+}
+
+.satellite-row
+{
+	flex-wrap:nowrap;
+	position:static !important;
+	margin-bottom:30px;
+}
+
+.col-sat {
+    
+    float: none;
+	/*display: flex;*/
+    padding: 20px;
+    width: 150px;
+	align-items: flex-start;
+    flex-direction: column;
+	margin-top:80px;
+	margin-left: 30px;
+	
+}
+
+.col-sat-table {
+    vertical-align: middle;
+	display: inline-block;
+    float: none;
+}
+
+.sat-row{
+	position:static !important;
+	margin-bottom:30px;
+}
+
+
+.col-bubble{
+    
+    float: none;
+    /* display: flex; */
+    padding: 20px;
+    width: 200px;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-left: 30px;
+	
+}
+
+.col-bubble-plot {
+    vertical-align: middle;
+	display: inline-block;
+    float: none;
+}
+
+.bubbleplot-row{
+	position:static !important;
+	margin-bottom:30px;
+}
+
+.bubble-label{
+	margin: 2px;
+    font-size: 14px;
+    font-weight: 500;
+	    height: 20px;
+}
+
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }
