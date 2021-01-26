@@ -1,0 +1,5 @@
+plotly
+flask
+python3
+pandas
+numpy
