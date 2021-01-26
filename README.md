@@ -1,3 +1,5 @@
+![Ironhack logo](https://i.imgur.com/1QgrNNw.png)
+
 # [Your Final Project Title]
 
 **[Mahshid AMIR MOAZAMI and Matthieu COGET]**
