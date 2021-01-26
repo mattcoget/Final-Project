@@ -1,10 +1,10 @@
 ![Ironhack logo](https://i.imgur.com/1QgrNNw.png)
 
-# [Your Final Project Title]
+# EUROCONSULT
 
-**[Mahshid AMIR MOAZAMI and Matthieu COGET]**
+**Mahshid AMIR MOAZAMI & Matthieu COGET**
 
-**[Your Cohort Campus & Time]**
+*Data Analytics full-time Paris Jan 2021*
 
 ## Overview
 
@@ -35,17 +35,22 @@ Notes:
 ## Data Preparation
 
 ### Overview:
+* Datasets:
+	* Satellites
+		- Launched from 2009  to to be launched by 2028.
+		- Application
+		- Launch status
+		- Range of price
+	* Budget by country
+		- Year
+		- Application
+		- Civil or defence
 
 * What is your dataset about?
 * Where/how did you obtain your dataset?
 	* It can be either a public dataset or collected with API/web scraping.
 	* Provide a link if possible.
 * General description of the dataset such as the size, complexity, data types, etc.
-
-### Data Ingestion
-
-* If you downloaded a dataset (either public or private), describe where you downloaded it and include the command to load the dataset.
-* If you obtain the data via API/web scraping, provide the scripts.
 
 ### Data Wrangling and Cleaning
 
@@ -87,6 +92,18 @@ $ python app.py
 ```
 
 ![screenshot of the dashboard](/static/img/dashboard.png)
+
+## Organization
+In repositoy of project you find:
+
+- README.md
+- app.py
+- dashboard.py
+- dashboardDB.py
+- dashboard_plots.py
+- img
+- templates
+- static
 
 ## Conclusion
 
