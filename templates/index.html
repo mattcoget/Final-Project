@@ -128,10 +128,16 @@
 				{{download_excel | safe}}
 				<a href="{{url_for('download', type='excel', filter='satellites')}}" role="button" class="download" name="excel-file" style="font-size:20px"> <i class="fa fa-file-excel-o"></i></a>
 			</div>
+			<div class="row  bubble-label">
+				<label class="bubbleplot-row">Country</label>
+			</div>
 			<div class="row">
 				<select class="form-control sat-row" id ='country-list-sat'>
 					{{countries_sat | safe}}
 				 </select>
+			</div>
+			<div class="row  bubble-label">
+				<label class="bubbleplot-row">Application</label>
 			</div>
 			<div class="row">
 				<select class="form-control sat-row" id ='application-list'>

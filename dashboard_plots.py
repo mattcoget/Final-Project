@@ -150,6 +150,7 @@ def create_lineChart(df):
             ),
             cells=dict(
                 values=[df[k].tolist() for k in df.columns],
+
                 align = "left",
                 line_color='darkslategray',
                 fill_color='white',
@@ -220,13 +221,15 @@ def create_satellite_table(df):
       columnwidth = [120 for i,col in enumerate(list(df.columns))],
       header=dict(
         values=[f"<b>{k}<b>" for k in df.columns],
+
         line_color='rgb(8, 81, 156)', fill_color='#fc5e61',
+
         align='left', font=dict(color='white', size=10)
       ),
       cells=dict(
         values=[df[k].tolist() for k in df.columns],
         line_color='white', fill_color='white',
-        align='left', font=dict(color='black', size=10)
+        align='left', font=dict(color='#023161', size=10)
       ))
     ])
     table.update_layout(
