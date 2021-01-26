@@ -19,7 +19,8 @@ max-width:initial;
   /*background-color: #6c757d;*/
   padding: 15px 15px;
   overflow: hidden;
-  background-color: #333;
+ /* background-color: #04296d;*/
+  background-color: rgb(0, 19, 77);
   position: absolute; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
@@ -41,7 +42,7 @@ max-width:initial;
 }
 
 .header a:hover {
-  background-color: #ddd;
+  background-color: rgb(0, 19, 77);
   color: black;
 }
 
@@ -277,8 +278,8 @@ max-width:initial;
   padding-top: 5px;
 }
 .selector-btn.active{
-	color: #e9ecef !important;
-    background-color: #305072 !important;
+	color: white !important;
+    background-color: #2b7bb3 !important;
 }
 
 .satellite-row

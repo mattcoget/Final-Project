@@ -203,6 +203,7 @@ def download():
     
     except Exception as e:
         print(e)
+        
 
             
 def open_browser():

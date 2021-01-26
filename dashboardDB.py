@@ -84,7 +84,7 @@ class DashboardDB:
             df = self.satellite[self.satellite['country']==name].copy()
         else:
             df = self.satellite[(self.satellite['country']==name)&(self.satellite['Application']==app)].copy()
-        self.satellite = df
+        self.filteredSatellite = df
         return self.getSatellites(df)
     
     def getSatellites(self,df):
@@ -103,7 +103,7 @@ class DashboardDB:
         return data
     
     def getSatelliteDF(self):
-        return self.satellite
+        return self.filteredSatellite
      
         
     def setIndicator(self, indicator):
