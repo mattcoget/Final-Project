@@ -64,17 +64,19 @@ def create_bubbleChart(data):
         title='Satellites budget in millions USD',
         xaxis=dict(
 
-            gridcolor='white',
+            gridcolor='rgb(243, 243, 243)',
             type='linear',
             gridwidth=2,
         ),
         yaxis=dict(
         
-        gridcolor='white',
+        gridcolor='rgb(243, 243, 243)',
         gridwidth=2,
     ),
-    paper_bgcolor='rgb(243, 243, 243)',
-    plot_bgcolor='rgb(243, 243, 243)',
+    #paper_bgcolor='rgb(243, 243, 243)',
+    #plot_bgcolor='rgb(243, 243, 243)',
+    paper_bgcolor='white',
+    plot_bgcolor='white',
     yaxis_range=[-150.0,150.0]
     )
 
@@ -138,9 +140,11 @@ def create_lineChart(df):
     #table = create_table(df)
     fig.add_trace(
         go.Table(
+            columnorder = [1,2,3,4,5,6,7,8],
+            columnwidth = [150,120,150,150,150,150,150,150],
             header=dict(
                 values=df.columns.str.replace('_',' '),
-                line_color='darkslategray', fill_color='rgb(8, 81, 156)',
+                line_color='darkslategray', fill_color='#fc5e61',
                 align='left', font=dict(color='white', size=10),
                 height=40
             ),
@@ -148,7 +152,7 @@ def create_lineChart(df):
                 values=[df[k].tolist() for k in df.columns],
                 align = "left",
                 line_color='darkslategray',
-                fill_color='whitesmoke',
+                fill_color='white',
                 font=dict(color='midnightblue', size=10)
 
             )
@@ -168,16 +172,17 @@ def create_lineChart(df):
         title='Evolution of Budget for each country',
         xaxis=dict(
 
-            gridcolor='white',
+            gridcolor='rgb(243, 243, 243)',
             type='linear',
             gridwidth=2,
         ),
         yaxis=dict(
         
-        gridcolor='white',
+        gridcolor='rgb(243, 243, 243)',
         gridwidth=2,
     ),
-
+     paper_bgcolor='white',
+     plot_bgcolor='white',
      height=700
     )
     
@@ -215,7 +220,7 @@ def create_satellite_table(df):
       columnwidth = [120 for i,col in enumerate(list(df.columns))],
       header=dict(
         values=[f"<b>{k}<b>" for k in df.columns],
-        line_color='rgb(8, 81, 156)', fill_color='rgb(8, 81, 156)',
+        line_color='rgb(8, 81, 156)', fill_color='#fc5e61',
         align='left', font=dict(color='white', size=10)
       ),
       cells=dict(

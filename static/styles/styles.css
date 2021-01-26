@@ -19,15 +19,21 @@ max-width:initial;
   /*background-color: #6c757d;*/
   padding: 15px 15px;
   overflow: hidden;
-  background-color: #333;
+  /*background-color: #00134d;*/
+  background-color:white;
   position: absolute; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
+}
+.header-img {
+    height: 40PX;
+    width: 400px;
 }
 
 .header a {
   /*float: left;*/
   color: #e9ecef;
+  /*background-color: #00134d;*/
   text-align: center;
   padding: 12px;
   text-decoration: none;
@@ -41,7 +47,7 @@ max-width:initial;
 }
 
 .header a:hover {
-  background-color: #ddd;
+  background-color: #00134d;
   color: black;
 }
 
@@ -67,6 +73,7 @@ max-width:initial;
 }
 .header{
 	margin:5px 5px 15px 5px;
+	border-bottom: thick lightgrey solid;
 }
 
 .app-container {
@@ -152,9 +159,11 @@ max-width:initial;
     width: 500px;
 }*/
 .lineplot-row{
-	flex-wrap:nowrap;
-	position:static !important;
-	/*margin-bottom:30px;*/
+	flex-wrap: nowrap;
+    position: static !important;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: thin lightgrey solid;
 }
 .col-filter{
     
@@ -277,8 +286,8 @@ max-width:initial;
   padding-top: 5px;
 }
 .selector-btn.active{
-	color: #e9ecef !important;
-    background-color: #305072 !important;
+	color: white !important;
+    background-color: #2a7bb0 !important;
 }
 
 .satellite-row
@@ -333,6 +342,7 @@ max-width:initial;
 }
 
 .bubbleplot-row{
+	flex-wrap:nowrap;
 	position:static !important;
 	margin-bottom:30px;
 }
