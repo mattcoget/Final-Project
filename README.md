@@ -8,34 +8,14 @@
 
 ## Overview
 
-Include the following points in your overview:
+Two projects were proposed by Euroconsult, which is a consulting firm specialized in space markets. 
 
-* What data/business/research/personal question you would like to answer?
-	* Make sure the question description is human-friendly because you will have non-tech audience to see your final project presentation.
-* What is the hypothesis you would like to test in order to answer your question?
-	* Frame your hypothesis with statistical/data languages (i.e. define Null and Alternative Hypothesis). You can use formulas if you want but that is not required.
-* How will you test your hypothesis?	
+* The first was the creation of an interactive dashboard to have an overview on the satellites activities and budget for every country.
+* The second project was the modelling of the budget on satellites per country for the next 10 years from the budgets for the last 22 years.
 
-Notes:
+Two datasets were provided by Euroconsult and were cleaned. Some adaptations were needed (data aggregation, pivot table).
 
-* You can submit the final project with Jupyter Notebook. If you would like to submit a different file format, make sure to discuss with the instructor.
-* Based on the nature of your goal and your intended problem-solving approach, you are encouraged to use as many skills, technologies, and tools as possible that you have learned in this course, which include but are not limited to:
-	* Python
-	* MySQL
-	* Statistical analysis
-	* Data visualization
-	* Jupyter Notebook
-	* Tableau
-	* Machine Learning
-	* Apache Spark / Network Analysis / Natual Language Processing
-* Include screenshots wherever relevant.
-* Feel free to add more sections to this worksheet.
-* Meet with your instructor/TA on daily basis to obtain feedback and support.
-
-## Data Preparation
-
-### Overview:
-* Datasets:
+* Datasets provided were:
 	* Satellites
 		- Launched from 2009  to to be launched by 2028.
 		- Application
@@ -46,32 +26,19 @@ Notes:
 		- Application
 		- Civil or defence
 
-* What is your dataset about?
-* Where/how did you obtain your dataset?
-	* It can be either a public dataset or collected with API/web scraping.
-	* Provide a link if possible.
-* General description of the dataset such as the size, complexity, data types, etc.
+The budget dataset was composed of 97,459 rows and 10 columns with 2 numeric columns, the rest were objects.
+The satellites dataset was composed of 2,500 rows and 9 columns with 1 numeric column (dates), the rest were objects. Two columns were price range and weight range of the satellites, so it easily became dummies.
 
-### Data Wrangling and Cleaning
+### Libraries used:
 
-* Your full process of data wrangling and cleaning.
-* Document your workflow and thinking process.
+Pandas, Numpy, Matplotlib.pyplot, Seaborn
 
-### Data Storage
+* For the dashboard:
+	* Plotly (an interactive graphing library for Python)
+	* Flask (a micro web framework written in Python)
+* For the :
+	* Sklearn (a machine learning library for Python)
 
-* Dump your data to a MySQL database and/or a `.csv` file.
-
-## Data Analysis
-
-### Overview
-
-Overview the general steps you will go through to analyze your data in order to test your hypothesis.
-
-### Data Exploration and Visualization
-
-* Document each step of your data exploration and analysis.
-* Print charts to demonstrate the effect of your work. Charts make your presentation look good too.
-* If you use ML in your final project, also describe your feature selection process.
 
 ### Model Training and Evaluation
 
@@ -94,7 +61,7 @@ $ python app.py
 ![screenshot of the dashboard](/static/img/dashboard.png)
 
 ## Organization
-In repositoy of project you find:
+In repository of project you find:
 
 - README.md
 - app.py
