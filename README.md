@@ -63,14 +63,7 @@ $ python app.py
 ## Organization
 In repository of project you find:
 
-- README.md
-- app.py
-- dashboard.py
-- dashboardDB.py
-- dashboard_plots.py
-- img
-- templates
-- static
+<img src="static/img/folder.png" style="float:left;" width="200" height="300"/>
 
 ## Conclusion
 
