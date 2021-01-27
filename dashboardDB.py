@@ -12,7 +12,8 @@ class DashboardDB:
         self.indicator = 'Budget'
         self.features = list(self.budget.columns)
         
-        self.budget_coordinates = pd.read_csv('data/boo.csv', index_col='Unnamed: 0')
+        #self.budget_coordinates = pd.read_csv('data/budget_coord.csv', index_col='Unnamed: 0')
+        self.budget_coordinates = createCoordinatesBudget()
 
         self.filteredBudget = self.budget.copy()
         self.filteredBudgetCoor = self.budget_coordinates.copy()
@@ -121,6 +122,20 @@ class DashboardDB:
         Inputs - selected columns=columns
         """
         self.features = columns.strip(',').split(',')
+        
+        
+        
+def createCoordinatesBudget():
+    df = pd.read_csv('data/budget_cleaned.csv')
+    
+    df1 = pd.read_csv('static/data/coordinates.csv',sep='\t')
+    df1.drop('country',axis=1,inplace=True)
+    df1.rename({'name':'country'},axis=1,inplace=True)
+    merged_df = pd.merge(df, df1, on='country').rename({'latitude':'CenterLatitude','longitude':'CenterLongitude'},axis=1)
+    merged_df.sort_values(by=['country', 'year'])[['country','region','year','application','program_type',
+                                               'CenterLongitude','CenterLatitude','value']]
+    #merged_df.to_csv('data/budget_coord.csv')
+    return(merged_df)
         
     
    

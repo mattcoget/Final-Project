@@ -56,7 +56,7 @@ def create_bubbleChart(data):
           )
 
     # Tune marker appearance and layout
-    if len(region['size']):
+    if len(data1['size']):
         fig.update_traces(mode='markers', marker=dict(sizemode='area', 
                                                   sizeref=(lambda x: 2.*max(x)/(100**2))(data1['size']), line_width=2), showlegend=True)
 
