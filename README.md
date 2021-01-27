@@ -37,7 +37,7 @@ Pandas, Numpy, Matplotlib.pyplot, Seaborn
 	* Plotly (an interactive graphing library for Python)
 	* Flask (a micro web framework written in Python)
 * For the :
-	* Sklearn (a machine learning library for Python)
+	* Scikit-Learn (a machine learning for data modelling library on Python)
   
 ### Dashboard
 
@@ -66,11 +66,10 @@ In repository of project you find:
 	* Support Vector Regression (SVR) with a polynomial factor as some budget evolutions look like a cubic evolution.
 
 During the modelling, we see that the performance were way better on Linear Regression model, compare to SVR which don’t really fit with our data. Moreover the evaluation metrics for SVR were bad for the Defence programs, for some of them, the statistics were worse than an horizontal line.
+Even Linear Regression is the best model compare to SVR, it isn't a really good model: it needs more datas to process a better prediction.
 
 ## Conclusion
 
-* Summarize your data analysis result.
-* State your conclusion of your hypothesis testing.
-* Interpret your findings in terms of the human-understandable question you try to answer.
-* What are the next steps?
-
+* The dashboard is fully operationnal.
+* The model cannot give a good prediction for the moment. It need to be feed with more datas or find another model which need less data give a good prediction.
+* The RBF neural networks could be used to go further on the predictive part.
