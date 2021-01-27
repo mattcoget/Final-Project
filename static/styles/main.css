@@ -1,7 +1,0 @@
-/* need to overwrite css in dash-container and table so bootstrap works*/
-#dash-container{
-  margin-top: 50px;
-}
-.dash-table-container .row {
-  margin: 0;
-}
